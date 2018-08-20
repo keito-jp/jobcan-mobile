@@ -1,23 +1,48 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import * as  React from "react";
+import {View} from "react-native";
+import {
+  Body,
+  Button,
+  Container,
+  Header,
+  Text,
+  Title,
+} from "native-base";
 
 export default class App extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-        <Text>Changes you make will automatically reload.</Text>
-        <Text>Shake your phone to open the developer menu.</Text>
-      </View>
+      <Container>
+        <Header>
+          <Body>
+            <Title>ジョブカン</Title>
+          </Body>
+        </Header>
+        <View
+          style={{
+            flex: 1,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            paddingLeft: 10,
+            paddingRight: 10,
+            paddingBottom: 40
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 40,
+              marginBottom: 20
+            }}
+          >Working</Text>
+          <Text
+            style={{
+              marginBottom: 10
+            }}
+          >ジョブカンの打刻ができる最高にかっこいいアプリ</Text>
+          <Button full><Text>打刻</Text></Button>
+        </View>
+      </Container>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
