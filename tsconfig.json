@@ -27,7 +27,6 @@
     "build",
     "node_modules",
     "jest.config.js",
-    "App.test.js",
     "App.js"
   ],
   "compileOnSave": false
