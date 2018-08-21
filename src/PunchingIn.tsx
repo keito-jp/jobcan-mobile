@@ -2,13 +2,10 @@ import * as React from "react";
 import { View } from "react-native";
 import { connect } from "react-redux";
 import { Button, Text } from "native-base";
-import { readStatus } from "./actions";
-
-interface IAccount {
-  cliendID: string;
-  email: string;
-  password: string;
-}
+import {
+  IAccount,
+  readStatus
+} from "./actions";
 
 interface IStateProps {
   loading: boolean;
@@ -60,9 +57,9 @@ class Container extends React.Component<IProps, {}> {
   private handleClick = () => {
     console.log(this.props.loading);
     this.props.readStatus({
-      cliendID: "foo",
-      email: "example@exapmle.com",
-      password: "password!"
+      cliend_id: "Syoya,inc.",
+      email: "kate@syoya.com",
+      password: "oE81Npiv8n4oiy4DwHPDZR2IFXxEmY"
     });
   };
 }
@@ -70,12 +67,12 @@ class Container extends React.Component<IProps, {}> {
 export default connect(
   (store: any) => {
     return {
-      loading: store.readStatus.loading
+      loading: store.readStatus.loading,
     };
   },
   dispatch => {
     return {
-      readStatus: (account: IAccount) => dispatch(readStatus(account))
+      readStatus: (account: IAccount) => dispatch(readStatus({account}))
     };
   }
 )(Container);

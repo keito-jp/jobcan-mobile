@@ -18,11 +18,13 @@ export function readStatus(
         loading: true
       };
     case actions.READ_STATUS_SUCCESS:
+      console.log(JSON.stringify(action.payload));
       return {
         loading: false,
         success: action.payload
       };
     case actions.READ_STATUS_FAILURE:
+      console.log(JSON.stringify(action.payload));
       return {
         loading: false,
         failure: action.payload

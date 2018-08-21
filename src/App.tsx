@@ -1,11 +1,20 @@
 import * as React from "react";
-import { Provider } from "react-redux";
-import { createStore } from "redux";
+import {
+  Provider
+} from "react-redux";
+import {
+  applyMiddleware,
+  createStore
+} from "redux";
+import createSagaMiddleware from "redux-saga";
 import { Body, Container, Header, Title } from "native-base";
 import reducers from "./reducers";
 import PunchingIn from "./PunchingIn";
+import saga from "./sagas";
 
-const store = createStore(reducers, {});
+const sagaMiddleware = createSagaMiddleware();
+const store = createStore(reducers, applyMiddleware(sagaMiddleware));
+sagaMiddleware.run(saga);
 
 export default class App extends React.Component {
   render() {
