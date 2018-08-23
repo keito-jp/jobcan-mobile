@@ -47,6 +47,7 @@ export default class AccountForm extends React.Component<IProps, IState> {
             textContentType="password"
             value={this.state.account.password}
             onChangeText={this.handleChangePassword}
+            secureTextEntry
           />
         </Item>
         <Button full onPress={this.handlePressSave}>

@@ -15,6 +15,10 @@ export const SAVE_ACCOUNT = "SAVE_ACCOUNT";
 export const SAVE_ACCOUNT_SUCCESS = "SAVE_ACCOUNT_SUCCESS";
 export const SAVE_ACCOUNT_FAILURE = "SAVE_ACCOUNT_FAILURE";
 
+export const PUNCH_IN = "PUNCH_IN";
+export const PUNCH_IN_SUCCESS = "PUNCH_IN_SUCCESS";
+export const PUNCH_IN_FAILURE = "PUNCH_IN_FAILURE";
+
 export interface IAccount {
   client_id: string;
   email: string;
@@ -60,3 +64,12 @@ export const saveAccountSuccess = createAction<ISaveAccountSuccessPayload>(
   SAVE_ACCOUNT_SUCCESS
 );
 export const saveAccountFailure = createAction(SAVE_ACCOUNT_FAILURE);
+
+export interface IPunchInSuccessPayload {
+  response: IResponse;
+}
+export const punchIn = createAction(PUNCH_IN);
+export const punchInSuccess = createAction<IPunchInSuccessPayload>(
+  PUNCH_IN_SUCCESS
+);
+export const punchInFailure = createAction(PUNCH_IN_FAILURE);

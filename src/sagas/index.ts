@@ -4,15 +4,16 @@ import { call, put, takeEvery } from "redux-saga/effects";
 import * as actions from "../actions";
 
 const ACCOUNT_KEY = "account";
+const APPLICATION_JSON = "application/json";
 
-function readStatusAPI(account: actions.IAccount) {
-  return fetch("https://syoya-kate.appspot.com/status", {
-    method: "POST",
+function request(method: string, uri: string, body?: string) {
+  return fetch(`https://syoya-kate.appspot.com/${uri}`, {
+    method,
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json"
+      Accept: APPLICATION_JSON,
+      "Content-Type": APPLICATION_JSON
     },
-    body: JSON.stringify(account)
+    body
   })
     .then(response => {
       return response.json();
@@ -21,6 +22,10 @@ function readStatusAPI(account: actions.IAccount) {
       return json;
     })
     .catch(err => err);
+}
+
+function readStatusAPI(account: actions.IAccount) {
+  return request("POST", "status", JSON.stringify(account));
 }
 
 function* readStatus() {
@@ -72,8 +77,32 @@ function* saveAccount(action: Action<actions.ISaveAccountPayload>) {
   }
 }
 
+function punchInAPI(account: actions.IAccount) {
+  return request("POST", "punch", JSON.stringify(account));
+}
+
+function* punchIn() {
+  try {
+    const s = yield AsyncStorage.getItem(ACCOUNT_KEY);
+    const response = yield call(punchInAPI, JSON.parse(s));
+    if (response.status === "undefined") {
+      yield put(actions.punchInFailure(new Error("status is undefined")));
+    } else {
+      yield put(actions.punchInSuccess({ response }));
+      yield put(
+        actions.complete({
+          message: "打刻が完了しました。"
+        })
+      );
+    }
+  } catch (e) {
+    yield put(actions.punchInFailure(e));
+  }
+}
+
 export default function* saga() {
   yield takeEvery(actions.READ_STATUS, readStatus);
   yield takeEvery(actions.READ_ACCOUNT, readAccount);
   yield takeEvery(actions.SAVE_ACCOUNT, saveAccount);
+  yield takeEvery(actions.PUNCH_IN, punchIn);
 }

@@ -1,5 +1,6 @@
-import { Content } from "native-base";
 import * as React from "react";
+import { View } from "react-native";
+import { NavigationContainerProps } from "react-navigation";
 import { connect } from "react-redux";
 import {
   IAccount,
@@ -19,7 +20,10 @@ interface IDispatchProps {
   saveAccount: (account: IAccount) => void;
 }
 
-interface IProps extends IStateProps, IDispatchProps {}
+interface IProps
+  extends IStateProps,
+    IDispatchProps,
+    NavigationContainerProps {}
 
 interface IState {
   account: IAccount;
@@ -27,19 +31,26 @@ interface IState {
 
 class Container extends React.Component<IProps, IState> {
   public componentDidMount() {
-    this.props.readAccount();
+    this.props.navigation.addListener("willFocus", () => {
+      this.props.readAccount();
+    });
   }
 
   public render() {
     return (
-      <Content>
+      <View
+        style={{
+          paddingLeft: 10,
+          paddingRight: 10
+        }}
+      >
         {this.props.readAccountSuccess != null ? (
           <AccountForm
             account={this.props.readAccountSuccess.account}
             onSubmit={this.handleSubmit}
           />
         ) : null}
-      </Content>
+      </View>
     );
   }
 

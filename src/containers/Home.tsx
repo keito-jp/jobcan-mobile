@@ -2,17 +2,19 @@ import * as React from "react";
 import { View } from "react-native";
 import { NavigationContainerProps } from "react-navigation";
 import { connect } from "react-redux";
-import { Button, Text } from "native-base";
-import { IReadStatusSuccessPayload, readStatus } from "../actions";
+import { Button, Text, Spinner } from "native-base";
+import { punchIn, readStatus } from "../actions";
 import { IStore } from "../reducers";
 
 interface IStateProps {
-  loading: boolean;
-  readStatusSuccess: IReadStatusSuccessPayload;
+  loadingStatus: boolean;
+  loadingPunchIn: boolean;
+  status: string;
 }
 
 interface IDispatchProps {
   readStatus: () => void;
+  punchIn: () => void;
 }
 
 interface IProps
@@ -23,7 +25,6 @@ interface IProps
 class Container extends React.Component<IProps, {}> {
   public componentDidMount() {
     this.props.navigation.addListener("willFocus", () => {
-      console.log("Foo!");
       this.props.readStatus();
     });
   }
@@ -41,14 +42,16 @@ class Container extends React.Component<IProps, {}> {
           paddingBottom: 40
         }}
       >
-        {this.props.readStatusSuccess != null ? (
+        {this.props.loadingStatus ? (
+          <Spinner color="blue" />
+        ) : this.props.status != null ? (
           <Text
             style={{
               fontSize: 40,
               marginBottom: 20
             }}
           >
-            {this.props.readStatusSuccess.response.status}
+            {this.props.status}
           </Text>
         ) : null}
         <Text
@@ -56,11 +59,15 @@ class Container extends React.Component<IProps, {}> {
             marginBottom: 10
           }}
         >
-          ジョブカンの打刻ができる最高にかっこいいアプリ
+          ジョブカンの打刻ができるかっこいいアプリ
         </Text>
-        <Button full onPress={this.handleClick}>
-          <Text>打刻</Text>
-        </Button>
+        {this.props.loadingPunchIn ? (
+          <Spinner color="blue" />
+        ) : (
+          <Button full onPress={this.handleClick}>
+            <Text>打刻</Text>
+          </Button>
+        )}
         <Button
           full
           onPress={this.handleClickSettings}
@@ -77,20 +84,22 @@ class Container extends React.Component<IProps, {}> {
   };
 
   private handleClick = () => {
-    console.log(this.props.readStatusSuccess);
+    this.props.punchIn();
   };
 }
 
 export default connect(
   (state: IStore) => {
     return {
-      loading: state.readStatus.loading,
-      readStatusSuccess: state.readStatus.success
+      loadingStatus: state.readStatus.loading,
+      loadingPunchIn: state.punchIn.loading,
+      status: state.globalStatus.status
     };
   },
   dispatch => {
     return {
-      readStatus: () => dispatch(readStatus())
+      readStatus: () => dispatch(readStatus()),
+      punchIn: () => dispatch(punchIn())
     };
   }
 )(Container);

@@ -124,16 +124,78 @@ export function saveAccount(
   }
 }
 
+interface IPunchInStore {
+  loading: boolean;
+  success: actions.IPunchInSuccessPayload;
+  failure: any;
+}
+export function punchIn(
+  state: IPunchInStore = {
+    loading: false,
+    success: null,
+    failure: null
+  },
+  action: Action<any>
+) {
+  switch (action.type) {
+    case actions.PUNCH_IN:
+      return {
+        loading: true
+      };
+    case actions.PUNCH_IN_SUCCESS:
+      console.log(action.payload);
+      return {
+        loading: false,
+        success: action.payload
+      };
+    case actions.PUNCH_IN_FAILURE:
+      return {
+        loading: false,
+        failure: action.payload
+      };
+    default:
+      return state;
+  }
+}
+
+interface IGlobalStatusStore {
+  status: string;
+}
+
+export function globalStatus(
+  state: IGlobalStatusStore = {
+    status: null
+  },
+  action: Action<any>
+) {
+  switch (action.type) {
+    case actions.READ_STATUS_SUCCESS:
+    case actions.PUNCH_IN_SUCCESS:
+      if (action.payload.response.status == null) {
+        return state;
+      }
+      return {
+        status: action.payload.response.status
+      };
+    default:
+      return state;
+  }
+}
+
 export interface IStore {
+  complete: ICompleteStore;
   readStatus: IReadStatusStore;
   readAccount: IReadAccountStore;
   saveAccount: ISaveAccountStore;
-  complete: ICompleteStore;
+  punchIn: IPunchInStore;
+  globalStatus: IGlobalStatusStore;
 }
 
 export default combineReducers({
+  complete,
   readStatus,
   readAccount,
   saveAccount,
-  complete
+  punchIn,
+  globalStatus
 });
