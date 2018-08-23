@@ -2,7 +2,6 @@ import * as React from "react";
 import { View } from "react-native";
 import {
   NavigationContainerProps,
-  NavigationScreenConfig
 } from "react-navigation";
 import { connect } from "react-redux";
 import {

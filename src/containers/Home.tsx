@@ -10,8 +10,7 @@ import { punchIn, readStatus } from "../actions";
 import { IStore } from "../reducers";
 
 interface IStateProps {
-  loadingStatus: boolean;
-  loadingPunchIn: boolean;
+  loading: boolean;
   status: string;
 }
 
@@ -58,41 +57,30 @@ class Container extends React.Component<IProps, {}> {
           paddingBottom: 40
         }}
       >
-        {this.props.loadingStatus ? (
-          <Spinner color="blue" />
-        ) : this.props.status != null ? (
-          <Text
-            style={{
-              fontSize: 40,
-              marginBottom: 20
-            }}
-          >
-            {this.props.status}
-          </Text>
-        ) : null}
         <Text
           style={{
-            marginBottom: 10
+            fontSize: 40,
+            marginBottom: 20
           }}
         >
-          ジョブカンの打刻ができるかっこいいアプリ
+          {this.props.status != null ? this.props.status : "loading…"}
         </Text>
-        {this.props.loadingPunchIn ? (
-          <Spinner color="blue" />
-        ) : (
-          <Button full onPress={this.handleClick}>
+        <Button
+          full
+          onPress={this.handlePressPunchIn}
+          disabled={this.props.loading}
+        >
+          {this.props.loading ? (
+            <Spinner color="white" />
+          ) : (
             <Text>打刻</Text>
-          </Button>
-        )}
+          )}
+        </Button>
       </View>
     );
   }
 
-  private handleClickSettings = () => {
-    this.props.navigation.navigate("Settings");
-  };
-
-  private handleClick = () => {
+  private handlePressPunchIn = () => {
     this.props.punchIn();
   };
 }
@@ -100,8 +88,7 @@ class Container extends React.Component<IProps, {}> {
 export default connect(
   (state: IStore) => {
     return {
-      loadingStatus: state.readStatus.loading,
-      loadingPunchIn: state.punchIn.loading,
+      loading: state.readStatus.loading || state.punchIn.loading,
       status: state.globalStatus.status
     };
   },
