@@ -1,8 +1,11 @@
 import * as React from "react";
 import { View } from "react-native";
-import { NavigationContainerProps } from "react-navigation";
+import {
+  NavigationContainerProps,
+  NavigationScreenConfig
+} from "react-navigation";
 import { connect } from "react-redux";
-import { Button, Text, Spinner } from "native-base";
+import { Button, Icon, Text, Spinner } from "native-base";
 import { punchIn, readStatus } from "../actions";
 import { IStore } from "../reducers";
 
@@ -23,6 +26,19 @@ interface IProps
     NavigationContainerProps {}
 
 class Container extends React.Component<IProps, {}> {
+  static navigationOptions = (config: NavigationScreenConfig<any>) => {
+    return {
+      title: "ジョブカン勤怠",
+      headerRight: (
+        <Icon
+          name="settings"
+          onPress={() => config.navigation.navigate("Settings")}
+          style={{ paddingRight: 10 }}
+        />
+      )
+    };
+  };
+
   public componentDidMount() {
     this.props.navigation.addListener("willFocus", () => {
       this.props.readStatus();
@@ -68,13 +84,6 @@ class Container extends React.Component<IProps, {}> {
             <Text>打刻</Text>
           </Button>
         )}
-        <Button
-          full
-          onPress={this.handleClickSettings}
-          style={{ marginTop: 16 }}
-        >
-          <Text>アカウント設定</Text>
-        </Button>
       </View>
     );
   }

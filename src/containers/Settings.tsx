@@ -1,6 +1,9 @@
 import * as React from "react";
 import { View } from "react-native";
-import { NavigationContainerProps } from "react-navigation";
+import {
+  NavigationContainerProps,
+  NavigationScreenConfig
+} from "react-navigation";
 import { connect } from "react-redux";
 import {
   IAccount,
@@ -30,6 +33,10 @@ interface IState {
 }
 
 class Container extends React.Component<IProps, IState> {
+  static navigationOptions = {
+    title: "アカウント設定"
+  };
+
   public componentDidMount() {
     this.props.navigation.addListener("willFocus", () => {
       this.props.readAccount();
