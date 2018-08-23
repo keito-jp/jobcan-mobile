@@ -1,8 +1,6 @@
 import * as React from "react";
 import { View } from "react-native";
-import {
-  NavigationContainerProps,
-} from "react-navigation";
+import { NavigationContainerProps } from "react-navigation";
 import { connect } from "react-redux";
 import {
   IAccount,

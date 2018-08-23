@@ -63,18 +63,14 @@ class Container extends React.Component<IProps, {}> {
             marginBottom: 20
           }}
         >
-          {this.props.status != null ? this.props.status : "loading…"}
+          {this.props.status != null ? this.props.status : ""}
         </Text>
         <Button
           full
           onPress={this.handlePressPunchIn}
-          disabled={this.props.loading}
+          disabled={this.props.loading || this.props.status == null}
         >
-          {this.props.loading ? (
-            <Spinner color="white" />
-          ) : (
-            <Text>打刻</Text>
-          )}
+          {this.props.loading ? <Spinner color="white" /> : <Text>打刻</Text>}
         </Button>
       </View>
     );

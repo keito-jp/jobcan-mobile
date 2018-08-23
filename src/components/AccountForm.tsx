@@ -16,11 +16,7 @@ export default class AccountForm extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      account: {
-        client_id: props.account.client_id,
-        email: props.account.email,
-        password: props.account.password
-      }
+      account: props.account != null ? props.account : ({} as IAccount)
     };
   }
 
@@ -29,7 +25,7 @@ export default class AccountForm extends React.Component<IProps, IState> {
       <Form>
         <Item>
           <Input
-            placeholder="クライアントID"
+            placeholder="勤怠会社ID"
             value={this.state.account.client_id}
             onChangeText={this.handleChangeClientID}
           />
